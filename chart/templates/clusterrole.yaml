@@ -1,13 +1,10 @@
 apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
+kind: ClusterRole
 metadata:
   name: {{ include "finops-composition-definition-parser.fullname" . }}
   labels:
     {{- include "finops-composition-definition-parser.labels" . | nindent 4 }}
 rules:
-- apiGroups: [""]
-  resources: ["secrets"]
-  verbs: ["get", "list"]
-- apiGroups: ["finops.krateo.io"]
-  resources: ["databaseconfigs"]
+- apiGroups: ["core.krateo.io"]
+  resources: ["compositiondefinitions"]
   verbs: ["get", "list"]

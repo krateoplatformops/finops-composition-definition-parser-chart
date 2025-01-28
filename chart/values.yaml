@@ -128,6 +128,7 @@ env:
   URL_PLURALS: http://bff.krateo-system.svc.cluster.local:8081/api-info/names
   DEBUG_LEVEL: info
   ANNOTATION_LABEL: krateo-finops-focus-resource
+  ANNOTATION_TABLE: composition_definition_annotations
   URL_DATABASE_HANDLER_PRICING_NOTEBOOK: http://finops-database-handler.finops:8088/compute/pricing_parser
   DATABASE_CONFIG_NAME: finops-tutorial-config
   DATABASE_CONFIG_NAMESPACE: krateo-system
