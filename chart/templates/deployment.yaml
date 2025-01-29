@@ -30,6 +30,17 @@ spec:
       serviceAccountName: {{ include "finops-composition-definition-parser.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+      - name: upload-notebooks
+        image: alpine:3.21.2
+        command: ["/bin/sh", "-c"]
+        args: ["sh /scripts/create-notebooks.sh"]
+        volumeMounts:
+        - name: script-volume
+          mountPath: /scripts
+        envFrom:
+          - configMapRef:
+              name: {{ include "finops-composition-definition-parser.fullname" . }}
       containers:
         - name: {{ include "finops-composition-definition-parser.fullname" . }}
           envFrom:
