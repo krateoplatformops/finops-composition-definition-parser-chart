@@ -106,7 +106,12 @@ autoscaling:
   # targetMemoryUtilizationPercentage: 80
 
 # Additional volumes on the output Deployment definition.
-volumes: []
+volumes:
+  - name: script-volume
+    configMap:
+      name: notebook-scripts
+      namespace: krateo-system
+      defaultMode: 0755
 # - name: foo
 #   secret:
 #     secretName: mysecret

@@ -9,3 +9,34 @@ data:
   {{ $key }}: {{ $value | quote }}
   {{- end }} 
   PORT_FINOPS_COMPOSITION_DEFINITION_PARSER: "{{ .Values.service.port }}"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: notebook-scripts
+  labels:
+  {{- include "finops-composition-definition-parser.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": pre-install, pre-upgrade
+data:
+  create-notebooks.sh: |-
+    #!/bin/bash
+    set -e
+    
+    apk add git curl kubectl
+    
+    git clone https://github.com/krateoplatformops/finops-database-handler.git
+    cd finops-database-handler/notebook_samples
+    
+    export NAME=$(kubectl get databaseconfigs.finops.krateo.io -n $DATABASE_CONFIG_NAMESPACE $DATABASE_CONFIG_NAME -o jsonpath='{.spec.passwordSecretRef.name}')
+    printf "database config name: %s\n" "$NAME"
+    
+    export PASSWORD=$(kubectl get -n $DATABASE_CONFIG_NAMESPACE secret $NAME -o jsonpath='{.data.password}')
+    printf "database config password: %s\n" "$PASSWORD"
+    
+    PRICING_FRONTEND=$(echo $URL_DATABASE_HANDLER_PRICING_NOTEBOOK | sed 's/pricing_parser/pricing_frontend/')
+    printf "Pricing upload @ %s\n" "$URL_DATABASE_HANDLER_PRICING_NOTEBOOK/upload"
+    printf "Frontend upload @ %s\n" "$PRICING_FRONTEND/upload"
+    
+    curl -u "system:$PASSWORD" -X POST "$URL_DATABASE_HANDLER_PRICING_NOTEBOOK/upload" --data-binary "@pricing_parser.py"
+    curl -u "system:$PASSWORD" -X POST "$PRICING_FRONTEND/upload" --data-binary "@pricing_frontend.py"
