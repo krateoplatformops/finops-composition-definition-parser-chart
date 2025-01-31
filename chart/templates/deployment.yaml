@@ -43,10 +43,6 @@ spec:
           {{- toYaml .Values.initSecurityContext | nindent 12 }}
         image: "{{ .Values.initImage.repository }}:{{ .Values.initImage.tag }}"
         imagePullPolicy: {{ .Values.initImage.pullPolicy }}
-        livenessProbe:
-          {{- toYaml .Values.initLivenessProbe | nindent 12 }}
-        readinessProbe:
-          {{- toYaml .Values.initReadinessProbe | nindent 12 }}
         resources:
           {{- toYaml .Values.initResources | nindent 12 }}
         {{- with .Values.initVolumeMounts }}
