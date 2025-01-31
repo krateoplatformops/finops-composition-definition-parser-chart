@@ -31,16 +31,28 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       initContainers:
-      - name: upload-notebooks
-        image: alpine:3.21.2
-        command: ["/bin/sh", "-c"]
-        args: ["sh /scripts/create-notebooks.sh"]
-        volumeMounts:
-        - name: script-volume
-          mountPath: /scripts
+      - name: {{ .Values.initFullname }}
+        command: 
+        {{- toYaml .Values.initCommand | nindent 8 }}
+        args: 
+        {{- toYaml .Values.initArgs | nindent 8 }}
         envFrom:
           - configMapRef:
               name: {{ include "finops-composition-definition-parser.fullname" . }}
+        securityContext:
+          {{- toYaml .Values.initSecurityContext | nindent 12 }}
+        image: "{{ .Values.initImage.repository }}:{{ .Values.initImage.tag }}"
+        imagePullPolicy: {{ .Values.initImage.pullPolicy }}
+        livenessProbe:
+          {{- toYaml .Values.initLivenessProbe | nindent 12 }}
+        readinessProbe:
+          {{- toYaml .Values.initReadinessProbe | nindent 12 }}
+        resources:
+          {{- toYaml .Values.initResources | nindent 12 }}
+        {{- with .Values.initVolumeMounts }}
+        volumeMounts:
+          {{- toYaml . | nindent 12 }}
+        {{- end }}
       containers:
         - name: {{ include "finops-composition-definition-parser.fullname" . }}
           envFrom:
