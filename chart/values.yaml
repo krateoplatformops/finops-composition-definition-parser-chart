@@ -129,6 +129,53 @@ tolerations: []
 
 affinity: {}
 
+
+# INIT container values
+initFullname: upload-notebooks
+
+initImage:
+  repository: ghcr.io/krateoplatformops/alpine
+  # This sets the pull policy for images.
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: 3.21.2
+
+initCommand: 
+  - "/bin/sh"
+  - "-c"
+initArgs:
+  - "sh /scripts/create-notebooks.sh"
+
+initLivenessProbe: {}
+initReadinessProbe: {}
+
+initSecurityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+initResources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+# Additional volumeMounts on the output Deployment definition.
+initVolumeMounts:
+  - name: script-volume
+    mountPath: /scripts
+
+
+# Applies to container and initContainer
 env:
   URL_PLURALS: http://bff.krateo-system.svc.cluster.local:8081/api-info/names
   DEBUG_LEVEL: info
