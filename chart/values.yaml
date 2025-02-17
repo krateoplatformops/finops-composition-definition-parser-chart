@@ -176,6 +176,6 @@ env:
   DEBUG_LEVEL: info
   ANNOTATION_LABEL: krateo-finops-focus-resource
   ANNOTATION_TABLE: composition_definition_annotations
-  URL_DATABASE_HANDLER_PRICING_NOTEBOOK: http://finops-database-handler.finops:8088/compute/pricing_parser
+  URL_DATABASE_HANDLER_PRICING_NOTEBOOK: http://finops-database-handler.krateo-system:8088/compute/pricing_parser
   DATABASE_CONFIG_NAME: finops-tutorial-config
   DATABASE_CONFIG_NAMESPACE: krateo-system
