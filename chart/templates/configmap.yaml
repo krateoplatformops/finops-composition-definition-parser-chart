@@ -37,6 +37,67 @@ data:
     PRICING_FRONTEND=$(echo $URL_DATABASE_HANDLER_PRICING_NOTEBOOK | sed 's/pricing_parser/pricing_frontend/')
     printf "Pricing upload @ %s\n" "$URL_DATABASE_HANDLER_PRICING_NOTEBOOK/upload"
     printf "Frontend upload @ %s\n" "$PRICING_FRONTEND/upload"
-    
-    curl -u "system:$PASSWORD" -X POST "$URL_DATABASE_HANDLER_PRICING_NOTEBOOK/upload" --data-binary "@pricing_parser.py"
-    curl -u "system:$PASSWORD" -X POST "$PRICING_FRONTEND/upload" --data-binary "@pricing_frontend.py"
+
+    # Function to verify JSON response
+    verify_response() {
+        local response="$1"
+        local expected='{"result":true}'
+        
+        if [ "$response" = "$expected" ]; then
+            return 0
+        else
+            printf "Error: Expected %s but got %s\n" "$expected" "$response"
+            return 1
+        fi
+    }
+
+    # Function to make curl request with timeout and error handling
+    make_curl_request() {
+        local url="$1"
+        local file="$2"
+        local description="$3"
+        
+        # Set timeout to 60 seconds, follow redirects, show errors
+        local response
+        response=$(curl -s -S --connect-timeout 60 --max-time 60 -L \
+                  -u "system:$PASSWORD" -X POST \
+                  "$url" --data-binary "@$file" 2>&1)
+        
+        local curl_exit=$?
+        
+        # Check for curl errors
+        case $curl_exit in
+            0)
+                # Success - verify the response
+                verify_response "$response" || {
+                    printf "Error: %s - Invalid response\n" "$description"
+                    return 1
+                }
+                ;;
+            6)
+                printf "Error: %s - Could not resolve host\n" "$description"
+                return 1
+                ;;
+            7)
+                printf "Error: %s - Could not connect to host\n" "$description"
+                return 1
+                ;;
+            28)
+                printf "Error: %s - Operation timed out\n" "$description"
+                return 1
+                ;;
+            *)
+                printf "Error: %s - Curl failed with exit code %d: %s\n" "$description" "$curl_exit" "$response"
+                return 1
+                ;;
+        esac
+        
+        printf "%s successful\n" "$description"
+        return 0
+    }
+
+    # First upload
+    make_curl_request "$URL_DATABASE_HANDLER_PRICING_NOTEBOOK/upload" "pricing_parser.py" "Pricing parser upload" || exit 1
+
+    # Second upload
+    make_curl_request "$PRICING_FRONTEND/upload" "pricing_frontend.py" "Frontend upload" || exit 1
