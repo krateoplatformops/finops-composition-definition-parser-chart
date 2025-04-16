@@ -35,8 +35,15 @@ data:
     printf "database config password: %s\n" "$PASSWORD"
     
     PRICING_FRONTEND=$(echo $URL_DATABASE_HANDLER_PRICING_NOTEBOOK | sed 's/pricing_parser/pricing_frontend/')
+    COSTS_FRONTEND=$(echo $URL_DATABASE_HANDLER_PRICING_NOTEBOOK | sed 's/pricing_parser/costs/')
+    COSTSBREAKDOWN_FRONTEND=$(echo $URL_DATABASE_HANDLER_PRICING_NOTEBOOK | sed 's/pricing_parser/costsbreakdown/')
+    METRICS_FRONTEND=$(echo $URL_DATABASE_HANDLER_PRICING_NOTEBOOK | sed 's/pricing_parser/metrics/')
+
     printf "Pricing upload @ %s\n" "$URL_DATABASE_HANDLER_PRICING_NOTEBOOK/upload"
     printf "Frontend upload @ %s\n" "$PRICING_FRONTEND/upload"
+    printf "Costs upload @ %s\n" "$COSTS_FRONTEND/upload"
+    printf "Costs breakdown upload @ %s\n" "$COSTSBREAKDOWN_FRONTEND/upload"
+    printf "Metrics upload @ %s\n" "$METRICS_FRONTEND/upload"
 
     # Function to verify JSON response
     verify_response() {
@@ -96,8 +103,9 @@ data:
         return 0
     }
 
-    # First upload
+    # Actual uploads
     make_curl_request "$URL_DATABASE_HANDLER_PRICING_NOTEBOOK/upload" "pricing_parser.py" "Pricing parser upload" || exit 1
-
-    # Second upload
     make_curl_request "$PRICING_FRONTEND/upload" "pricing_frontend.py" "Frontend upload" || exit 1
+    make_curl_request "$COSTS_FRONTEND/upload" "costs_frontend.py" "Costs upload" || exit 1
+    make_curl_request "$COSTSBREAKDOWN_FRONTEND/upload" "costsbreakdown_frontend.py" "Costs breakdown upload" || exit 1
+    make_curl_request "$METRICS_FRONTEND/upload" "metrics_frontend.py" "Metrics upload" || exit 1
