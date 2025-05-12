@@ -172,7 +172,6 @@ initVolumeMounts:
 
 # Applies to container and initContainer
 env:
-  URL_PLURALS: http://bff.krateo-system.svc.cluster.local:8081/api-info/names
   DEBUG_LEVEL: info
   ANNOTATION_LABEL: krateo-finops-focus-resource
   ANNOTATION_TABLE: composition_definition_annotations
