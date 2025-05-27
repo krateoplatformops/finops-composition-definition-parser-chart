@@ -38,12 +38,14 @@ data:
     COSTS_FRONTEND=$(echo $URL_DATABASE_HANDLER_PRICING_NOTEBOOK | sed 's/pricing_parser/costs/')
     COSTSBREAKDOWN_FRONTEND=$(echo $URL_DATABASE_HANDLER_PRICING_NOTEBOOK | sed 's/pricing_parser/costsbreakdown/')
     METRICS_FRONTEND=$(echo $URL_DATABASE_HANDLER_PRICING_NOTEBOOK | sed 's/pricing_parser/metrics/')
+    CYCLIC_OPTIMIZATION=$(echo $URL_DATABASE_HANDLER_PRICING_NOTEBOOK | sed 's/pricing_parser/cyclic/')
 
     printf "Pricing upload @ %s\n" "$URL_DATABASE_HANDLER_PRICING_NOTEBOOK/upload"
     printf "Frontend upload @ %s\n" "$PRICING_FRONTEND/upload"
     printf "Costs upload @ %s\n" "$COSTS_FRONTEND/upload"
     printf "Costs breakdown upload @ %s\n" "$COSTSBREAKDOWN_FRONTEND/upload"
     printf "Metrics upload @ %s\n" "$METRICS_FRONTEND/upload"
+    printf "Cyclic Optimization upload @ %s\n" "$CYCLIC_OPTIMIZATION/upload"
 
     # Function to verify JSON response
     verify_response() {
@@ -109,3 +111,4 @@ data:
     make_curl_request "$COSTS_FRONTEND/upload" "costs_frontend.py" "Costs upload" || exit 1
     make_curl_request "$COSTSBREAKDOWN_FRONTEND/upload" "costsbreakdown_frontend.py" "Costs breakdown upload" || exit 1
     make_curl_request "$METRICS_FRONTEND/upload" "metrics_frontend.py" "Metrics upload" || exit 1
+    make_curl_request "$CYCLIC_OPTIMIZATION/upload" "cyclic.py" "Cyclic optimization upload" || exit 1
