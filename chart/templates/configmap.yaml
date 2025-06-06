@@ -23,8 +23,6 @@ data:
     #!/bin/bash
     set -e
     
-    apk add git curl kubectl
-    
     git clone https://github.com/krateoplatformops/finops-database-handler.git
     cd finops-database-handler/notebook_samples
     

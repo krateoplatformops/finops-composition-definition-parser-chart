@@ -136,7 +136,7 @@ initImage:
   repository: ghcr.io/krateoplatformops/alpine
   # This sets the pull policy for images.
   pullPolicy: IfNotPresent
-  tag: 3.21.2
+  tag: tools
 
 initCommand: 
   - "/bin/sh"
