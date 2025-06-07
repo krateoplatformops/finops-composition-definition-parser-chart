@@ -111,13 +111,17 @@ volumes:
     configMap:
       name: notebook-scripts
       defaultMode: 0755
+  - name: scratch
+    emptyDir: {}
 # - name: foo
 #   secret:
 #     secretName: mysecret
 #     optional: false
 
 # Additional volumeMounts on the output Deployment definition.
-volumeMounts: []
+volumeMounts:
+  - name: scratch
+    mountPath: /temp
 # - name: foo
 #   mountPath: "/etc/foo"
 #   readOnly: true
