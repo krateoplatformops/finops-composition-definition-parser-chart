@@ -113,6 +113,8 @@ volumes:
       defaultMode: 0755
   - name: scratch
     emptyDir: {}
+  - name: notebooks
+    emptyDir: {}
 # - name: foo
 #   secret:
 #     secretName: mysecret
@@ -172,6 +174,8 @@ initResources: {}
 initVolumeMounts:
   - name: script-volume
     mountPath: /scripts
+  - name: upload
+    mountPath: /upload
 
 
 # Applies to container and initContainer
