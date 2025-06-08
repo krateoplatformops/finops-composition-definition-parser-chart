@@ -174,7 +174,7 @@ initResources: {}
 initVolumeMounts:
   - name: script-volume
     mountPath: /scripts
-  - name: upload
+  - name: notebooks
     mountPath: /upload
 
 
