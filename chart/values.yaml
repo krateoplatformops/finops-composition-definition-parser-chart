@@ -111,19 +111,13 @@ volumes:
     configMap:
       name: notebook-scripts
       defaultMode: 0755
-  - name: scratch
-    emptyDir: {}
-  - name: notebooks
-    emptyDir: {}
 # - name: foo
 #   secret:
 #     secretName: mysecret
 #     optional: false
 
 # Additional volumeMounts on the output Deployment definition.
-volumeMounts:
-  - name: scratch
-    mountPath: /temp
+volumeMounts: {}
 # - name: foo
 #   mountPath: "/etc/foo"
 #   readOnly: true
@@ -173,9 +167,7 @@ initResources: {}
 # Additional volumeMounts on the output Deployment definition.
 initVolumeMounts:
   - name: script-volume
-    mountPath: /scripts
-  - name: notebooks
-    mountPath: /upload
+    mountPath: /tmp
 
 
 # Applies to container and initContainer
