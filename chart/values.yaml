@@ -142,7 +142,7 @@ initCommand:
   - "/bin/sh"
   - "-c"
 initArgs:
-  - "sh /scripts/create-notebooks.sh"
+  - "sh /tmp/create-notebooks.sh"
 
 initSecurityContext: {}
   # capabilities:
