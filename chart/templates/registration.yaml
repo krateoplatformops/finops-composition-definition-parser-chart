@@ -1,8 +1,7 @@
 apiVersion: eventrouter.krateo.io/v1alpha1
 kind: Registration
 metadata:
-  name: {{ include "finops-composition-definition-parser.fullname" . }}
-  namespace: {{ .Release.Namespace }}
+  name: {{ include "finops-composition-definition-parser.fullname" . }}-{{ .Release.Namespace }}
 spec:
   serviceName: {{ include "finops-composition-definition-parser.fullname" . }}
   endpoint: http://{{ include "finops-composition-definition-parser.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.service.port }}/handle
