@@ -1,7 +1,7 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: {{ include "finops-composition-definition-parser.fullname" . }}
+  name: {{ include "finops-composition-definition-parser.fullname" . }}-{{ .Release.Namespace }}
   labels:
     {{- include "finops-composition-definition-parser.labels" . | nindent 4 }}
 rules:
