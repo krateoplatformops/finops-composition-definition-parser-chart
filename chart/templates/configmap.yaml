@@ -23,7 +23,7 @@ data:
     #!/bin/bash
     set -e
     
-    git clone https://github.com/krateoplatformops/finops-database-handler.git --branch 0.4.3
+    git clone https://github.com/krateoplatformops/finops-database-handler.git --branch 0.4.4
     cd finops-database-handler/notebook_samples
     
     export NAME=$(kubectl get databaseconfigs.finops.krateo.io -n $DATABASE_CONFIG_NAMESPACE $DATABASE_CONFIG_NAME -o jsonpath='{.spec.passwordSecretRef.name}')
