@@ -30,25 +30,6 @@ spec:
       serviceAccountName: {{ include "finops-composition-definition-parser.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
-      initContainers:
-      - name: {{ .Values.initFullname }}
-        command: 
-        {{- toYaml .Values.initCommand | nindent 8 }}
-        args: 
-        {{- toYaml .Values.initArgs | nindent 8 }}
-        envFrom:
-          - configMapRef:
-              name: {{ include "finops-composition-definition-parser.fullname" . }}
-        securityContext:
-          {{- toYaml .Values.initSecurityContext | nindent 12 }}
-        image: "{{ .Values.initImage.repository }}:{{ .Values.initImage.tag }}"
-        imagePullPolicy: {{ .Values.initImage.pullPolicy }}
-        resources:
-          {{- toYaml .Values.initResources | nindent 12 }}
-        {{- with .Values.initVolumeMounts }}
-        volumeMounts:
-          {{- toYaml . | nindent 12 }}
-        {{- end }}
       containers:
         - name: {{ include "finops-composition-definition-parser.fullname" . }}
           envFrom:
